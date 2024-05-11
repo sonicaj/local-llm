@@ -34,8 +34,9 @@ def load_csv_documents() -> typing.List[str]:
     for csv_file in csv_files:
         df = pd.read_csv(csv_file)
         df['content'] = df.apply(lambda row: ' '.join(map(str, row)), axis=1)
-        documents = splitter.split_text(df['content'].tolist())
-        all_documents.extend(documents)
+        for content in df['content']:
+            documents = splitter.split_text(content)
+            all_documents.extend(documents)
 
     return all_documents
 
