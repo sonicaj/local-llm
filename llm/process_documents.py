@@ -4,9 +4,9 @@ import typing
 import pandas as pd
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import PyPDFLoader
-from langchain.embeddings import OllamaEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
 from .config import PDF_DIR, CSV_DIR, INDEX_DIR, EMBEDDING_MODEL

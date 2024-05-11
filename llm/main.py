@@ -1,10 +1,10 @@
 import requests
 
 from flask import Flask, request, jsonify
-from langchain.embeddings import OllamaEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.vectorstores import FAISS
 
-from .config import INDEX_DIR, EMBEDDING_MODEL, LLAMA3_URL
+from llm.config import INDEX_DIR, EMBEDDING_MODEL, LLAMA3_URL
 
 app = Flask(__name__)
 
