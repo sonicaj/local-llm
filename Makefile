@@ -8,7 +8,7 @@ build:
 	docker-compose build
 
 # Start all services
-start: build
+start:
 	docker-compose up -d
 
 # Stop all services
