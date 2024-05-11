@@ -1,3 +1,7 @@
+faiss-cpu
+Flask
+requests
 langchain
+pandas
 pypdf
 streamlit
