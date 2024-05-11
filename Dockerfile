@@ -13,4 +13,4 @@ RUN pip install --break-system-packages -U .
 EXPOSE 5000
 
 # Entrypoint command to start the app
-CMD ["python3", "main.py"]
+CMD ["python3", "llm/main.py"]
