@@ -1,3 +1,4 @@
 data/csv_files/*
 data/pdf_files/*
 ollama/*
+open-webui-data/*
