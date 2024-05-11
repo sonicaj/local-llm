@@ -1,4 +1,5 @@
 import pathlib
+import requests
 import typing
 
 import pandas as pd
@@ -9,7 +10,7 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
-from llm.config import PDF_DIR, CSV_DIR, INDEX_DIR, EMBEDDING_MODEL
+from llm.config import PDF_DIR, CSV_DIR, INDEX_DIR, EMBEDDING_MODEL, LLAMA3_BASE_URL
 
 
 def load_pdf_documents() -> typing.List[Document]:
@@ -49,6 +50,19 @@ def load_csv_documents() -> typing.List[Document]:
     return all_documents
 
 
+def get_remote_embeddings(documents, url):
+    """Fetch embeddings from a remote service."""
+    responses = []
+    for doc in documents:
+        response = requests.post(url, json={'text': doc})
+        if response.status_code == 200:
+            embedding = response.json().get('embedding')
+            responses.append(embedding)
+        else:
+            raise Exception('Failed to get embeddings from the server')
+    return responses
+
+
 def index_documents() -> None:
     """Index both PDF and CSV documents."""
     # Load and combine all document types
@@ -57,7 +71,8 @@ def index_documents() -> None:
     all_documents = pdf_documents + csv_documents
 
     # Generate embeddings
-    embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = get_remote_embeddings(all_documents, f'{LLAMA3_BASE_URL}/api/embeddings')
+    # embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
 
     # Create a FAISS vector store
     db = FAISS.from_documents(all_documents, embeddings)

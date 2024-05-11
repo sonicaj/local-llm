@@ -5,4 +5,5 @@ INDEX_DIR = '/app/data/faiss_index'
 EMBEDDING_MODEL = 'llama3'
 
 # URL for llama3 API
-LLAMA3_URL = 'http://ollama:11434/generate'
+LLAMA3_BASE_URL = 'http://local-llm-ollama:11434'
+LLAMA3_URL = f'{LLAMA3_BASE_URL}/generate'
