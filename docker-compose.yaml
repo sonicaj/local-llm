@@ -17,6 +17,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    volumes:
+      - ./data:/app/data
     # Port 5000 does not need to be exposed to the host machine
     #ports:
     #  - 5000:5000
