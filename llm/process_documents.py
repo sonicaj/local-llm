@@ -53,4 +53,4 @@ def index_documents() -> None:
     # Create a FAISS vector store
     db = FAISS.from_documents(all_documents, embeddings)
     db.save_local(INDEX_DIR)
-    print(f"Documents indexed and saved to {INDEX_DIR}")
+    print(f'Documents indexed and saved to {INDEX_DIR}')
