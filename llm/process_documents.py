@@ -50,19 +50,6 @@ def load_csv_documents() -> typing.List[Document]:
     return all_documents
 
 
-def get_remote_embeddings(documents, url):
-    """Fetch embeddings from a remote service."""
-    responses = []
-    for doc in documents:
-        response = requests.post(url, json={'text': doc})
-        if response.status_code == 200:
-            embedding = response.json().get('embedding')
-            responses.append(embedding)
-        else:
-            raise Exception('Failed to get embeddings from the server')
-    return responses
-
-
 def index_documents() -> None:
     """Index both PDF and CSV documents."""
     # Load and combine all document types
@@ -71,8 +58,8 @@ def index_documents() -> None:
     all_documents = pdf_documents + csv_documents
 
     # Generate embeddings
-    embeddings = get_remote_embeddings(all_documents, f'{LLAMA3_BASE_URL}/api/embeddings')
-    # embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+    embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+    embeddings.base_url = LLAMA3_BASE_URL
 
     # Create a FAISS vector store
     db = FAISS.from_documents(all_documents, embeddings)
