@@ -9,7 +9,7 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
-from .config import PDF_DIR, CSV_DIR, INDEX_DIR, EMBEDDING_MODEL
+from llm.config import PDF_DIR, CSV_DIR, INDEX_DIR, EMBEDDING_MODEL
 
 
 def load_pdf_documents() -> typing.List[Document]:
