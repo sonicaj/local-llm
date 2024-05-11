@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+
+  local-llm-ui:
+    image: ghcr.io/open-webui/open-webui:main
+    restart: always
+    ports:
+      - 3011:8080
+    volumes:
+      - ./open-webui-data:/app/backend/data
+    environment:
+      - "SEARCH_API_URL=http://local-llm-backend:5000/search"
+      - "OLLAMA_BASE_URL=http://local-llm-ollama:11434"
+
+  local-llm-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    # Port 5000 does not need to be exposed to the host machine
+    #ports:
+    #  - 5000:5000
+
+  local-llm-ollama:
+    image: ollama/ollama
+    restart: always
+    # Ollama service remains internal
+    volumes:
+      - ./ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
