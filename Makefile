@@ -20,7 +20,7 @@ restart: stop start
 
 # Index documents into the vector store
 index:
-	docker-compose run -v ./data:/app/data --rm local-llm-backend python3 llm/process_documents.py
+	docker-compose run -v ./data:/app/data --rm local-llm-backend /usr/local/bin/process_documents
 
 # Log output from containers
 logs:
