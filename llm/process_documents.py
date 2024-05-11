@@ -4,7 +4,7 @@ import typing
 import pandas as pd
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import CSVLoader, PyPDFLoader
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
@@ -26,17 +26,25 @@ def load_pdf_documents() -> typing.List[Document]:
     return all_documents
 
 
-def load_csv_documents() -> typing.List[str]:
+def load_csv_documents() -> typing.List[Document]:
     csv_files = [entry.as_posix() for entry in pathlib.Path(CSV_DIR).iterdir() if entry.name.endswith('.csv')]
+    loaders = [CSVLoader(csv) for csv in csv_files]
     all_documents = []
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 
+    for loader in loaders:
+        data = loader.load()
+        documents = splitter.split_documents(data)
+        all_documents.extend(documents)
+
+    '''
     for csv_file in csv_files:
         df = pd.read_csv(csv_file)
         df['content'] = df.apply(lambda row: ' '.join(map(str, row)), axis=1)
         for content in df['content']:
-            documents = splitter.split_text(content)
+            documents = [{'page_content': doc} for doc in splitter.split_text(content)]
             all_documents.extend(documents)
+    '''
 
     return all_documents
 
