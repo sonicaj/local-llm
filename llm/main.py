@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 
-from llm.config import INDEX_DIR, EMBEDDING_MODEL, LLAMA3_URL
+from llm.config import INDEX_DIR, EMBEDDING_MODEL, LLAMA3_BASE_URL, LLAMA3_URL
 
 app = Flask(__name__)
 
@@ -26,6 +26,7 @@ def query_llama3(query: str) -> str:
 def search():
     query = request.json.get('query', '')
     embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+    embeddings.base_url = LLAMA3_BASE_URL
     db = FAISS.load_local(INDEX_DIR, embeddings, allow_dangerous_deserialization=True)
     results = db.similarity_search(query)
 
