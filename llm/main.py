@@ -26,7 +26,7 @@ def query_llama3(query: str) -> str:
 def search():
     query = request.json.get('query', '')
     embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
-    db = FAISS.load_local(INDEX_DIR, embeddings)
+    db = FAISS.load_local(INDEX_DIR, embeddings, allow_dangerous_deserialization=True)
     results = db.similarity_search(query)
 
     if results:
